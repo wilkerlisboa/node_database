@@ -1,0 +1,28 @@
+body {
+  background: linear-gradient(135deg, #198754 0%, #145a32 100%);
+}
+
+.card {
+  border-radius: 15px;
+  overflow: hidden;
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.input-group-text {
+  border: none;
+}
+
+.form-control:focus {
+  border-color: #198754;
+  box-shadow: 0 0 5px rgba(25, 135, 84, 0.5);
+}
+
+.btn-success {
+  border-radius: 10px;
+  font-weight: 500;
+}

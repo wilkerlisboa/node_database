@@ -1,0 +1,77 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  nome      String
+  email     String   @unique
+  senha     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Produto {
+  id           Int      @id @default(autoincrement())
+  nome         String
+  preco        Float
+  estoque      Int
+  criadoEm     DateTime @default(now())
+  atualizadoEm DateTime @updatedAt
+
+  // Relacionamento inverso com ItemVenda
+  itens ItemVenda[]
+}
+
+model Cliente {
+  id           Int      @id @default(autoincrement())
+  nome         String
+  email        String   @unique
+  telefone     String?
+  criadoEm     DateTime @default(now())
+  atualizadoEm DateTime @updatedAt
+
+  // Relacionamento inverso com Venda
+  vendas Venda[]
+}
+
+model Venda {
+  id        Int      @id @default(autoincrement())
+  clienteId Int
+  total     Float
+  dataVenda DateTime @default(now())
+
+  cliente Cliente     @relation(fields: [clienteId], references: [id])
+  itens   ItemVenda[]
+}
+
+model ItemVenda {
+  id         Int   @id @default(autoincrement())
+  vendaId    Int
+  produtoId  Int
+  quantidade Int
+  subtotal   Float
+
+  venda   Venda   @relation(fields: [vendaId], references: [id])
+  produto Produto @relation(fields: [produtoId], references: [id])
+}
+
+model Configuracao {
+  id           Int      @id @default(autoincrement())
+  nomeLoja     String
+  endereco     String?
+  cnpj         String?
+  criadoEm     DateTime @default(now())
+  atualizadoEm DateTime @updatedAt
+}
